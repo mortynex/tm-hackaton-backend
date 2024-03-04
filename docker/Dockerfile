@@ -1,4 +1,5 @@
-FROM python:3.9  # Or another suitable Python base image
+FROM python:3.9
+# Or another suitable Python base image
 
 # Install required packages
 RUN pip install transformers==4.35.2 diffusers==0.25.0 accelerate==0.25.0 opencv-fixer==0.2.5 flask flask_cors
