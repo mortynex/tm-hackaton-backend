@@ -18,7 +18,7 @@ COPY requirements.txt /backend/
 RUN pip install -r requirements.txt
 
 # Copy the pre-trained model (ensure you have downloaded it)
-COPY models/stabilityai/stable-video-diffusion-img2vid-xt /backend/models/stabilityai/stable-video-diffusion-img2vid-xt 
+# COPY models/stabilityai/stable-video-diffusion-img2vid-xt /backend/models/stabilityai/stable-video-diffusion-img2vid-xt 
 
 # Specify the command to start your Flask backend
 CMD ["python", "backend.py"]  # Assuming your main Python file is named backend.py
