@@ -1,0 +1,6 @@
+transformers==4.35.2  
+diffusers==0.25.0  
+accelerate==0.25.0 
+opencv-fixer==0.2.5 
+flask 
+flask_cors 
