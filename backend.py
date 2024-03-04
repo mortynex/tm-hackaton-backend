@@ -1,6 +1,5 @@
 import base64
 from flask import Flask, request, jsonify, send_from_directory
-from io import BytesIO
 import torch
 from PIL import Image
 import os
@@ -49,6 +48,7 @@ def resize_image(image: Image, output_size: Tuple[int, int] =(1024, 576)):
         cropped_image = cropped_image.convert("RGB")
 
     return cropped_image
+
 app = Flask(__name__)
 max_64_bit_int = 2 ** 63 - 1
 output_folder = "outputs"
@@ -56,13 +56,19 @@ os.makedirs(output_folder, exist_ok=True)
 
 pipe = StableVideoDiffusionPipeline.from_pretrained(
     "stabilityai/stable-video-diffusion-img2vid-xt",
-    variant="fp16"
+    torch_dtype=torch.float32,
+    variant="fp16",
 )
+pipe.to("cpu")
 pipe.unet = torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
 pipe.vae = torch.compile(pipe.vae, mode="reduce-overhead", fullgraph=True)
-pipe.enable_model_cpu_offload()
-# ... (include all the functions from the improved Gradio example)
-#     resize_image, sample, etc.
+
+# According to your actual needs
+#
+# pipe.enable_model_cpu_offload()
+#pipe.unet.enable_forward_chunking()
+
+
 def sample(
     image: Image,
     seed: Optional[int] = 42,
@@ -71,9 +77,10 @@ def sample(
     fps_id: int = 6,
     version: str = "svd_xt",
     cond_aug: float = 0.02,
-    decoding_t: int = 3,  
-    device: str = "cpu",  # Force CPU usage
-    output_folder: str = output_folder,
+    decoding_t: int = 3,  # Number of frames decoded at a time! This eats most VRAM. Reduce if necessary.
+    device: str = "cpu",
+    output_folder:
+      str = output_folder,
 ):
 
     if randomize_seed:
@@ -114,6 +121,7 @@ def generate_video():
     data = request.get_json()
 
     image_data = str(data['imageData'])
+
     seed = int(data['seed'])
     motion_bucket_id = int(data['motionId'])
     fps_id = int(data['fps'])
@@ -148,5 +156,4 @@ def generate_video():
 
 
 if __name__ == '__main__':
-    app.run(debug=True) 
-    CORS(app)
+    app.run(debug=True, port=5000) 
