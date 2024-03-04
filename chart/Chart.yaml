@@ -1,0 +1,4 @@
+apiVersion: v2
+name: tm-hackaton-backend
+version: 1.0.0
+Appversion: 1.0.0

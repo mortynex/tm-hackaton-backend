@@ -1,0 +1,12 @@
+appName: myhelmapp
+
+port: 80
+
+namespace: default
+
+image:
+  name: mart1np/tm-hackaton
+  tag: main
+
+containerPort: 80
+servicePort: 80
