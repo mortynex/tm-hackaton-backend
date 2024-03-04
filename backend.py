@@ -114,8 +114,6 @@ def generate_video():
     data = request.get_json()
 
     image_data = str(data['imageData'])
-    with open('image_data.txt', 'w') as f:
-        f.write(image_data)
     seed = int(data['seed'])
     motion_bucket_id = int(data['motionId'])
     fps_id = int(data['fps'])
@@ -124,7 +122,7 @@ def generate_video():
     print(f"Seed: {seed}")  # Print the seed
     print(f"Motion bucket ID: {motion_bucket_id}")  # Print the motion bucket ID
     print(f"FPS ID: {fps_id}")  # Print the FPS ID
-
+    print("Image received, starting video generation")
     try:
         # Decode the image from base64
         image_data = image_data.split(',')[1]
