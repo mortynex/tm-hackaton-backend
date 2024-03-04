@@ -1,0 +1,9 @@
+- základní setup  
+- použití kubespray 
+  - modifikace .ini v inventory node 0-3
+  - pridani jmena .yml
+  -  deploynuti
+- stahnuti AI
+  - prepsani, abychom meli vlastni frontend
+  - docker
+- cl/cd
